@@ -18,5 +18,5 @@ RUN npm install --save node-opcua
 COPY . /usr/src/app/
 
 EXPOSE 8080
-EXPOSE 3800
+
 CMD [ "node", "backend/SkillMonitoring.js" ]
