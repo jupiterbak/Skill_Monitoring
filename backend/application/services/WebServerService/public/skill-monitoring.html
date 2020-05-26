@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SP347 Skill Monitoring</title>
+    <link rel="icon" type="./image/png" href="dist/img/siemens_favicon.ico" >
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <!-- bootstrap-toggle -->
+    <link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css">
+    <!-- D3 Sandkey -->
+    <link rel="stylesheet" href="bower_components/d3/sk.d3.min.css">
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/skin-siemens-light.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <!--<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>-->
+    <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
+    <script src="bower_components/maxcdn/html5shiv.min.js"></script>
+    <script src="bower_components/maxcdn/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <!-- <link rel="stylesheet" href="dist/css/Source_Sans_Pro/font.css"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+
+<body class="hold-transition skin-siemens-light sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+
+        <header class="main-header">
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+
+                <!-- Sidebar toggle button-->
+                <a class="sidebar-toggle" href="#" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                <a href="http://www.siemens.com/" class="logo-lg">
+                    <img src="dist/img/siemens-logo-en-2x.png" alt="logo image" class="cq-dd-image">
+                </a>
+
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+
+        <aside class="main-sidebar">
+
+            <section class="sidebar">
+
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="active">
+                        <a href="index.html">
+                            <i class="fa fa-th"></i> <span>Knowledge Graph</span>
+                            <span class="pull-right-container">
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="skill-monitoring.html">
+                            <i class="fa fa-dashboard"></i>
+                            <span>Skill Monitoring</span>
+                            <span class="pull-right-container">
+                            <span class="label label-primary pull-right">4</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Dashboard
+                    <small>Skill Monitoring</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Skill Monitoring</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row connectedSortable">
+                    <div class="col-md-9 ">
+                        <div class="box box-solid">
+                            <div class="box-header">
+                                <h3 class="box-title text-uppercase text-bold">State Machine</h3>
+
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-20 col-sm-12">
+                                        <div class="chart">
+                                            <!-- State Charts -->
+                                            <div id="StateChart" style="height: 70vh; width: 100%;"></div>
+                                        </div>
+                                        <!-- /.chart-responsive -->
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- ./box-body -->
+                            <div class="box-footer">
+                                <div class="row">
+
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.box-footer -->
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box box-solid">
+                            <div class="box-header">
+                                <h3 class="box-title text-uppercase text-bold">Skill Interface</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row  clearfix table-responsive">
+                                    <div class="col-md-12">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-4">Skill</th>
+                                                    <th ></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td><span id="ressourceName">Module X</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >IP</td>
+                                                    <td><span id="ressourceIP">XXX.XXX.XXX.XXX</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Port</td>
+                                                    <td><span id="ressourcePort">xxxx</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Status</td>
+                                                    <td><span id="ressourceStatus">Connection status</span></td>
+                                                </tr>
+                                               
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-4">Communication</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Pattern</td>
+                                                    <td class="pull-left">ATS Intern</td>
+                                                </tr>                                                
+                                            </tbody>
+                                        </table>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-4">Behaviour</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Type</td>
+                                                    <td>Skill State Machine</td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td>State Path</td>
+                                                    <td><span id="CurrentState" class="label label-success label-medium">##</span></td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-md-4">Parameter Name</th>
+                                                    <th>Type</th>
+                                                    <th>DataType</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="parameter_table_tbody">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="box box-solid">
+                            <div class="box-header">
+                                <h3 class="box-title text-uppercase text-bold">Avialables Actions
+                                </h3>
+
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                    <!-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> -->
+                                </div>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-pills nav-stacked" id="modelActionBtn">
+                                    <li id="Start" >
+                                        <a href="#" class="EFlexAction" data-action="Start" data-argumentcount="1">
+                                            <span class="info-box-text">Start<i class="fa fa-circle text-red pull-right "></i> </span>
+                                            <span class="info-box-number" id="start_max_load"></span>
+                                        </a>
+                                    </li>
+                                    <li id="GetResult" >
+                                        <a href="#" class="EFlexAction" data-action="GetResult">
+                                            <span class="info-box-text">GetResult<i class="fa fa-circle text-red pull-right "></i> </span>
+                                            <span class="info-box-number"></span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            <!-- /.footer -->
+                        </div>
+                    </div>
+                    <div id="modalContainers">
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- End Row -->
+
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="pull-right-xs">
+            <b>DF TI AT / SP 367</b> Innovation Fair
+        </div>
+        <strong>Copyright &copy; 2019 Siemens AG.</strong>
+    </footer>
+
+    <!-- ./wrapper -->
+    <!-- Template 7 Avialable SKills-->
+    <script id="SkillParameterTemplate" type="text/template7">
+        {{#each skillModel.Invokation.Start.parameters.inputArguments}}  
+        <tr>
+            <td>{{name}}</td>
+            <td>Input</td>
+            <td>Int16</td>
+        </tr>
+        {{/each}}
+
+        {{#each skillModel.Invokation.Start.parameters.outputArguments}}  
+        <tr>
+            <td>{{name}}</td>
+            <td>SyncOut</td>
+            <td>Int16</td>
+        </tr>
+        {{/each}}
+
+        {{#each skillModel.Invokation.GetResult.parameters.inputArguments}}  
+        <tr>
+            <td>{{name}}</td>
+            <td>AsyncOut</td>
+            <td>Int16</td>
+        </tr>
+        {{/each}}
+        
+    </script>
+
+    <script id="SkillParameterModal" type="text/template7">
+    <div class="modal"  role="dialog" tabindex="-1" id="paramModal{{name}}">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title"><span id="paramHeader">{{name}}</span>()</h4>
+                </div>                
+                <div class="modal-body">
+                    <div class="alert alert-warning alert-dismissible fade show" id="paramModalAlert{{name}}" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        ...
+                    </div>
+                    <form  role="form">
+                    <div class="row">
+                        <div class="col-md-6 input_param_div" >
+                            <h3>Input parameters</h3>
+                            {{#each parameters.inputArguments}}
+                            <div class="form-group">
+                                <label class="control-label" for="param{{name}}">{{name}}  <span class="label label-default label-small"> {{#js_if "this.valueRank > 0"}}Array of {{dataType}} {{else}} {{dataType}} {{/js_if}} </span></label>
+                                <input type="text" class="form-control input-sm" id="param{{name}}" data-dataType="{{dataType}}" data-arrayType=0x00 placeholder=""  />                            
+                            </div>
+                            {{/each}}
+                        </div><!-- # col-md-6-->
+                        <div class="col-md-6 output_param_div">
+                            <h3>Output parameters</h3>
+                            {{#each parameters.outputArguments}}
+                            <div class="form-group">
+                                <label class="control-label" for="param{{name}}">{{name}}  <span class="label label-default label-small"> {{#js_if "this.valueRank > 0"}}Array of {{dataType}} {{else}} {{dataType}} {{/js_if}} </span></label>
+                                <input type="text" class="form-control input-sm" id="param{{name}}" data-dataType="{{dataType}}" data-arrayType=0x00 placeholder=""  />                            
+                            </div>
+                            {{/each}}
+                        </div><!-- # col-md-6-->
+                    </div> <!-- # row-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                    <button type="button" id="execute_{{name}}" data-actionName="{{name}}" class="btn btn-primary executeMethod">Execute</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    </script>
+
+    <script id="SkillActionList" type="text/template7">
+        <li id="Start" >
+            <a href="#" class="EFlexAction" data-toggle="modal" data-target="#paramModal{{name}}" data-action="{{name}}">
+                <span class="info-box-text">{{name}}<i class="fa fa-circle text-siemens pull-right "></i> </span>
+                <span class="info-box-number" id="{{name}}_method_label"></span>
+            </a>
+        </li>
+    </script>
+
+    <!-- jQuery 3 -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+        function enterFullscreen(element) {
+            if (element.requestFullscreen) {
+                // element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            }
+        }
+        enterFullscreen(document.documentElement);
+    </script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Socket IO -->
+    <script src="bower_components/socketio/socket.io-1.4.3.js"></script>
+    <!-- Slimscroll -->
+    <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- bootstrap-toggle -->
+    <script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <!-- GoJS -->
+    <script src="bower_components/GoJS/go.js"></script>
+    <!-- <script src="bower_components/GoJS/ParallelLayout.js"></script> -->
+
+    <!-- Template 7 -->
+    <script src="bower_components/template7/template7.min.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="dist/js/pages/skill-monitoring.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
+</body>
+
+</html>
