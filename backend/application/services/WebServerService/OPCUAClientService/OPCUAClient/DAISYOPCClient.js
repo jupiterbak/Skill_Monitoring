@@ -111,7 +111,10 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
     this.monitoredItems = [];
     this.monitoredEvents = [];
     this.namespaceArray = ["http://opcfoundation.org/UA/"];
+
+    this.guidtest = guidtest;
 };
+
 
 DAISYOPCClient.prototype.getNamespaceIndexOfURI = function(uri) {
     for (let i = 0; i < this.namespaceArray.length; i++) {
@@ -557,6 +560,38 @@ DAISYOPCClient.prototype.browseNonHieriarchicalRef = function(ns, nid) {
     }).catch(e => console.log(e))
 };
 
+DAISYOPCClient.prototype.getDataType = function (ns, nid,callback) {
+    var self = this;
+    var type = guidtest(nid);
+    var max_age = 0;
+
+    this.session.read({ nodeId:  "ns=" + ns + ";" + type + "=" + nid, attributeId: opcua.AttributeIds.DataType}, max_age, function(err, dataValue) {
+        if (!err) {
+            if (dataValue.statusCode === opcua.StatusCodes.Good) { 
+                const dataTypeNodeId = dataValue.value.value; //
+                callback(null,dataTypeNodeId.value);
+            }
+        }else{
+            callback(err, opcua.DataType.Null);
+        }
+    });
+};
+
+DAISYOPCClient.prototype.getBuiltInDataType =  async function (nodeid_str) {
+    var self = this;
+
+    return await new Promise((resolve, reject) => {
+        self.session.getBuiltInDataType(dataTypeNodeId, function (err, dataType) {
+            if(err){
+                resolve(opcua.DataType.Null);
+            
+            }else{
+                resolve(dataType);
+            }   
+        }); 
+    });           
+};
+
 /**
  * @method readData
  * @async
@@ -571,6 +606,45 @@ DAISYOPCClient.prototype.readData = function(ns, nid, callback) {
         { nodeId: "ns=" + ns + ";" + type + "=" + nid, attributeId: opcua.AttributeIds.Value }
     ];
     this.session.read(nodes_to_read, max_age, function(err, dataValues) {
+        callback(err, dataValues);
+    });
+};
+/**
+ * @method readDataType
+ * @async
+ * @param ns {String} - The namespace index of the node
+ * @param nid {String} - the nodeId
+ * @param {Function} callback -   the callback function
+ */
+DAISYOPCClient.prototype.readDataType = function(ns, nid, callback) {
+    var max_age = 0;
+    var type = guidtest(nid);
+    var nodes_to_read = [
+        { nodeId: "ns=" + ns + ";" + type + "=" + nid, attributeId: opcua.AttributeIds.DataType }
+    ];
+    this.session.read(nodes_to_read, max_age, function(err, dataValues) {
+        callback(err, dataValues);
+    });
+};
+
+/**
+ * @method readNodesDataByNodeIds
+ * @async
+ * @param nodeIds  {ReadValueId[]} - the node ids of the variables to read
+ * @param {Function} callback -   the callback function
+ */
+DAISYOPCClient.prototype.readNodesDataByNodeIds = function(nodeIds, callback) {
+    var nodes_to_reads = [];
+    var max_age = 0;
+    nodeIds.forEach(nID => {
+        var type = guidtest(nID.nid);
+        nodes_to_reads.push(
+            {
+                nodeId: "ns=" + nID.ns + ";" + type + "=" + nID.nid
+            }
+        );
+    });    
+    this.session.read(nodes_to_reads, max_age, function(err, dataValues) {
         callback(err, dataValues);
     });
 };

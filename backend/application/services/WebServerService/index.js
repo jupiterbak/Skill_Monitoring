@@ -121,6 +121,14 @@ WebServerService.prototype.start = function() {
         });
     });
 
+    self.wapp.get('/ExecuteMethodNode', function(req, res) {
+        let action = JSON.parse(req.query.action);
+        self.opcuaclientservice.ExecuteMethodNode(action, function(err, results) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ err: err, results: results }));
+        });
+    });
+
     self.wapp.get('/monitorResultTrigger', function(req, res) {
         let node = JSON.parse(req.query.node);
         self.opcuaclientservice.monitorResultTrigger(node, self, function(err, results) {
@@ -130,9 +138,27 @@ WebServerService.prototype.start = function() {
     });
 
     self.wapp.get('/writeVariable', function(req, res) {
-        let variable = JSON.parse(req.query.action);
+        let variable = JSON.parse(req.query.node);
 
         self.opcuaclientservice.WriteVariable(variable, function(err, results) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ err: err, results: results }));
+        });
+    });
+
+    self.wapp.get('/writeVariableNode', function(req, res) {
+        let variable = JSON.parse(req.query.node);
+
+        self.opcuaclientservice.WriteVariableNode(variable, function(err, results) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ err: err, results: results }));
+        });
+    });
+
+    self.wapp.get('/readVariableNodes', function(req, res) {
+        let variable = JSON.parse(req.query.node);
+
+        self.opcuaclientservice.readVariableNodes(variable, function(err, results) {
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify({ err: err, results: results }));
         });
