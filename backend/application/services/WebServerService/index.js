@@ -155,6 +155,15 @@ WebServerService.prototype.start = function() {
         });
     });
 
+    self.wapp.get('/writeVariableNodes', function(req, res) {
+        let variable = JSON.parse(req.query.node);
+
+        self.opcuaclientservice.WriteVariableNodes(variable, function(err, results) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({ err: err, results: results }));
+        });
+    });
+
     self.wapp.get('/readVariableNodes', function(req, res) {
         let variable = JSON.parse(req.query.node);
 

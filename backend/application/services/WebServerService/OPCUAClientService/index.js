@@ -396,34 +396,97 @@ OPCUAClientInterface.prototype.WriteVariableNode = function(arg, fCallBack) {
                 if (_variable) {
                     // get Variable Datatype
                     let nodeId = _variable.nodeId;
+                    try {
+                        client.getDataType(nodeId.ns, nodeId.nid, function(datatype_err, _dataType) {
+                            if(datatype_err){
+                                fCallBack({ text: "Could not write variable [" + arg.name + "] : ", err: datatype_err }, null);
+                            }else{
+                                // Initialize the parameters
+                                let _value = {
+                                    value: { /* Variant */
+                                        dataType: _dataType,
+                                        value: JSON.parse(arg.value)
+                                    }
+                                };
+                                client.write(_variable.nodeId.ns, _variable.nodeId.nid, _value, function(err, statusCode) {
+                                    var _statuscode = statusCode[0];
+                                    if (err) {
+                                        self.app.log.error("MICROSERVICE[" + self.settings.name + "] could not write variable [" + arg.name + "] : " + err);
+                                        fCallBack({ text: "Could not write variable [" + arg.name + "] : ", err: err }, null);
+                                    } else {
+                                        self.app.log.log("MICROSERVICE[" + self.settings.name + "] write variable [" + arg.name + "] : executed with : " + _statuscode);
+                                        fCallBack(null, _statuscode);
+                                    }
+                                });
+                            }
+                        });
+                    }catch(ex_err) {
+                        self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variable. Unkown exception.");
+                        fCallBack({ text: "Could not write variable. Unkown exception." }, null);
+                    }                    
                     
-                    client.getDataType(nodeId.ns, nodeId.nid, function(datatype_err, _dataType) {
-                        if(datatype_err){
-                            fCallBack({ text: "Could not write variable [" + arg.name + "] : ", err: datatype_err }, null);
-                        }else{
-                            // Initialize the parameters
-                            let _value = {
-                                value: { /* Variant */
-                                    dataType: _dataType,
-                                    value: JSON.parse(arg.value)
-                                }
-                            };
-                            client.write(_variable.nodeId.ns, _variable.nodeId.nid, _value, function(err, statusCode) {
-                                var _statuscode = statusCode[0];
-                                if (err) {
-                                    self.app.log.error("MICROSERVICE[" + self.settings.name + "] could not write variable [" + arg.name + "] : " + err);
-                                    fCallBack({ text: "Could not write variable [" + arg.name + "] : ", err: err }, null);
-                                } else {
-                                    self.app.log.log("MICROSERVICE[" + self.settings.name + "] write variable [" + arg.name + "] : executed with : " + _statuscode);
-                                    fCallBack(null, _statuscode);
-                                }
-                            });
-                        }
-                    });
                 }else {
                     self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variable. Variable not found.");
                     fCallBack({ text: "Could not write variable. Variable not found" }, null);
                 }
+        } else {
+            self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variable. Client is disconnected.");
+            fCallBack({ text: "Could not execute action. Client is disconnected." }, null);
+        }
+    } else {
+        self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variable. Client and skills are not defined.");
+        fCallBack({ text: "Could not execute action. Client and skill are not defined." }, null);
+    }    
+};
+
+OPCUAClientInterface.prototype.WriteVariableNodes = function(arg, fCallBack) {
+    var self = this;
+    if (arg.ip && arg.socketID && arg.port && arg.serverName && arg.skillName && arg.nodes && arg.values) {
+        var client = self.manager.getClient(self.manager.getClientID(arg.ip, arg.port, arg.serverName, arg.socketID));
+        if (client && client.connected === true && client.information_model_checked === true) {
+                // Search for the action parameters
+                var _variables = arg.nodes;
+                var _values = arg.values;
+                var _resultstatuses = new Array(_values.length);                
+                    // get the variable datatype in parallel
+                    async.forEachOf(_variables, function (_obj, _index, _callback) {
+                        // Get the datatype
+                        if (_obj) {
+                            // get Variable Datatype                        
+                            client.getDataType(_obj.ns, _obj.nid, function(datatype_err, _dataType) {
+                                if(datatype_err){
+                                    _callback({ text: "Could not read datatype of variable [" + _obj.name + "] : ", err: datatype_err });
+                                }else{
+                                    // Initialize the parameters
+                                    try {
+                                        var _value = {
+                                            value: { /* Variant */
+                                                dataType: _dataType,
+                                                value: JSON.parse(_values[_index])
+                                            }
+                                        };
+                                        client.write(_obj.ns, _obj.nid, _value, function(err__, _statusCode) {
+                                            _resultstatuses[_index] = _statusCode[0];                                    
+                                            if (err__) {
+                                                _callback(err__);
+                                            }else{
+                                                _callback(null);
+                                            } 
+                                        }); 
+                                    } catch (ex_err) {
+                                        _callback(ex_err);
+                                    }                                                                  
+                                }
+                            });
+                        }
+                    }, function (err) {
+                        if (err){
+                            self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variables. Please check the input values.");
+                            fCallBack({ text: "Could not write variables. Please check the input values. : ", err: err }, null);
+                        }else{
+                            fCallBack(null, _resultstatuses);
+                        }
+                    });
         } else {
             self.app.log.warn("MICROSERVICE[" + self.settings.name + "] could not write variable. Client is disconnected.");
             fCallBack({ text: "Could not execute action. Client is disconnected." }, null);
