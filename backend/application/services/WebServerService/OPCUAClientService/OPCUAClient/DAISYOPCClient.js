@@ -87,10 +87,10 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         applicationName: "SP367_SKILL_ORCHESTRATOR",
         endpoint_must_exist: false,
         keepSessionAlive: true,
-        requestedSessionTimeout: 60000,
+        requestedSessionTimeout: 600000,
 
         connectionStrategy: {
-            maxRetry: 10, //20000000,
+            maxRetry: 1000, //20000000,
             initialDelay: 1000,
             maxDelay: 20000
         },
@@ -98,7 +98,7 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         securityPolicy: opcua.SecurityPolicy.None,
         //requestedSessionTimeout: 2000000,
         //serverCertificate: serverCertificate,
-        defaultSecureTokenLifetime: 400000,
+        //defaultSecureTokenLifetime: 400000,
     };
 
     this.client = opcua.OPCUAClient.create(options);
@@ -487,15 +487,15 @@ DAISYOPCClient.prototype.browseNodeByReferenceTypAndDirection = function(ns, nid
         }];
         self.session.browse(browseDescription, (err, browse_result) => {
             if (!err) {
-                result.err = err
-                result.browse_result = browse_result
+                result.err = err;
+                result.browse_result = browse_result;
                 resolve(browse_result);
             } else {
-                result.err = err
+                result.err = err;
                 reject(err);
             }
         });
-    }).catch(e => console.log(e))
+    }).catch(e => console.log(e));
 };
 
 DAISYOPCClient.prototype.browseNodeBack = function(ns, nid) {
@@ -575,21 +575,6 @@ DAISYOPCClient.prototype.getDataType = function (ns, nid,callback) {
             callback(err, opcua.DataType.Null);
         }
     });
-};
-
-DAISYOPCClient.prototype.getBuiltInDataType =  async function (nodeid_str) {
-    var self = this;
-
-    return await new Promise((resolve, reject) => {
-        self.session.getBuiltInDataType(dataTypeNodeId, function (err, dataType) {
-            if(err){
-                resolve(opcua.DataType.Null);
-            
-            }else{
-                resolve(dataType);
-            }   
-        }); 
-    });           
 };
 
 /**

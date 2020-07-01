@@ -164,7 +164,7 @@ OPCUAClientInterface.prototype.DisconnectPLC = function(arg, fCallBack) {
     var client = null;
     //Initialize a new client
     if (arg.ip && arg.socketID && arg.port && arg.serverName) {
-        var client = manager.getClient(manager.getClientID(arg.ip, arg.port, arg.serverName, arg.socketID));
+        client = manager.getClient(manager.getClientID(arg.ip, arg.port, arg.serverName, arg.socketID));
         if (client) {
             if (client.connected === true) {
                 client.disconnect(function(err) {
