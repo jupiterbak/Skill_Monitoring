@@ -184,6 +184,11 @@ WebServerService.prototype.start = function() {
         });
     });
 
+    self.wapp.get('/checkConnection', function(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({ err: null, results: 'OK' }));
+    });
+
     // Configure Knowledege Base Endpoints
     self.wapp.get('/connectKG', function(req, res) {
         let kg_ip = req.query.ip;
