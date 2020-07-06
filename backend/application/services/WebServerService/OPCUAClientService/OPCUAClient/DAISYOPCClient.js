@@ -87,11 +87,11 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         applicationName: "SP367_SKILL_ORCHESTRATOR",
         endpoint_must_exist: false,
         keepSessionAlive: true,
-        requestedSessionTimeout: 600000,
+        requestedSessionTimeout: 60000,
         connectionStrategy: {
-            maxRetry: 1000, //20000000,
+            maxRetry: 10000, //20000000,
             initialDelay: 1000,
-            maxDelay: 20000
+            maxDelay: 10000
         },
         securityMode: opcua.MessageSecurityMode.NONE,
         securityPolicy: opcua.SecurityPolicy.None,
@@ -181,11 +181,11 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                         port: port,
                         connection: false
                     });
-                    // self.connected = false;
+                    self.connected = false;
                     // self.monitored = false;
                     // self.information_model_checked = false;
                     // self.skill_array = [];
-                    //console.log("start_reconnection not working so aborting");
+                    console.log("start_reconnection not working so aborting");
                 });
                 self.client.on("connection_reestablished", function() {
                     self.socketHandler.emitAll(socketID, "serverstatus", {
@@ -195,7 +195,7 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                         connection: true
                     });
                     self.connected = true;
-                    //console.log("connection_reestablished ");
+                    console.log("connection_reestablished ");
                 });
                 self.client.on("close", function() {
                     self.socketHandler.emitAll(socketID, "serverstatus", {
@@ -243,7 +243,6 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                     } else {
 
                         //console.log("Connected to: ".green + url.green);
-
                         self.socketHandler.emitAll(socketID, "serverstatus", {
                             msg: "Connected to: " + url,
                             url: url,
@@ -264,15 +263,16 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                         self.session = session;
                         //console.log("Session created".green);
                         self.socketHandler.emitAll(socketID, self.getID() + "_SessionCreated");
+                        self.session.on("session_closed",function(statusCode) {
+                            console.log("session closed by the server.");
+                        });
+
                         callback();
                     } else {
                         callback(err);
                     }
-
                 });
-            }
-
-            ,
+            },
             // step 3: initialize a subscription
             function(callback) {
 
@@ -298,7 +298,7 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                     self.subscription = null;
                     callback();
                 }).on("internal_error", function(err) {
-                    //console.log("internal_error");
+                    console.error("subscription error: " + err);
                     self.socketHandler.emitAll(socketID, self.getID() + "_SubscriptionInternalError");
                     callback(err);
                     self.subscription = null;
