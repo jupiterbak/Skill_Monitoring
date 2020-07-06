@@ -294,7 +294,7 @@ OPCUAClientInterface.prototype.ExecuteMethodNode = function(arg, fCallBack) {
                                 inputArguments.push({
                                     dataType: _dtype, // only basic datatypes are supported
                                     arrayType: (el.valueRank !== -1) && (el.valueRank !== "-1") ? opcua.VariantArrayType.Array : opcua.VariantArrayType.Scalar,
-                                    value: _val
+                                    value: JSON.parse(_val) 
                                 });
                                 k++;
                             });

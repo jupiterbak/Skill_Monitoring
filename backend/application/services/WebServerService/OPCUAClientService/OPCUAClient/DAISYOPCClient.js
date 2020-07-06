@@ -278,12 +278,12 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
             function(callback) {
 
                 self.subscription = opcua.ClientSubscription.create(self.session, {
-                    requestedPublishingInterval: 10,
-                    requestedLifetimeCount: 60000,
-                    requestedMaxKeepAliveCount: 2000000,
-                    maxNotificationsPerPublish: 1000,
+                    requestedPublishingInterval: 100,
+                    requestedLifetimeCount: 600000,
+                    requestedMaxKeepAliveCount: 2000,
+                    maxNotificationsPerPublish: 10,
                     publishingEnabled: true,
-                    priority: 1
+                    priority: 6
                 });
 
                 self.subscription.on("started", function() {
@@ -291,8 +291,8 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
                     self.socketHandler.emitAll(socketID, self.getID() + "_SubscriptionStarted");
                     callback();
                 }).on("keepalive", function() {
-                    self.socketHandler.emitAll(socketID, "serverstatus", { msg: "Connection_KeepAlive", socketID: self.socketID, server: self.url, ip: self.ip, port: self.port, serverName: self.servername, connection: true });
-                    self.socketHandler.emitAll(socketID, self.getID() + "_SubscriptionKeepalive");
+                    //self.socketHandler.emitAll(socketID, "serverstatus", { msg: "Connection_KeepAlive", socketID: self.socketID, server: self.url, ip: self.ip, port: self.port, serverName: self.servername, connection: true });
+                    //self.socketHandler.emitAll(socketID, self.getID() + "_SubscriptionKeepalive");
                 }).on("terminated", function() {
                     console.log("monitoredItem terminated");
                     self.socketHandler.emitAll(socketID, self.getID() + "_SubscriptionTerminated");
