@@ -88,7 +88,6 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         endpoint_must_exist: false,
         keepSessionAlive: true,
         requestedSessionTimeout: 600000,
-
         connectionStrategy: {
             maxRetry: 1000, //20000000,
             initialDelay: 1000,
@@ -98,7 +97,7 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         securityPolicy: opcua.SecurityPolicy.None,
         //requestedSessionTimeout: 2000000,
         //serverCertificate: serverCertificate,
-        //defaultSecureTokenLifetime: 400000,
+        defaultSecureTokenLifetime: 400000,
     };
 
     this.client = opcua.OPCUAClient.create(options);
@@ -279,9 +278,9 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
 
                 self.subscription = opcua.ClientSubscription.create(self.session, {
                     requestedPublishingInterval: 100,
-                    requestedLifetimeCount: 600000,
-                    requestedMaxKeepAliveCount: 2000,
-                    maxNotificationsPerPublish: 10,
+                    requestedLifetimeCount: 10,
+                    requestedMaxKeepAliveCount: 2,
+                    maxNotificationsPerPublish: 100,
                     publishingEnabled: true,
                     priority: 6
                 });
