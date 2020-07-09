@@ -277,7 +277,7 @@ DAISYOPCClient.prototype.connect = function(ip, port, serverName, socketID, fCal
             function(callback) {
 
                 self.subscription = opcua.ClientSubscription.create(self.session, {
-                    requestedPublishingInterval: 100,
+                    requestedPublishingInterval: 10,
                     requestedLifetimeCount: 10,
                     requestedMaxKeepAliveCount: 2,
                     maxNotificationsPerPublish: 100,
