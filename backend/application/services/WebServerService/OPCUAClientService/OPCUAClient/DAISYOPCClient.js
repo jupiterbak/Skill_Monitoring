@@ -89,9 +89,9 @@ var DAISYOPCClient = function(ip, port, serverName, socketID, socketHandler) {
         keepSessionAlive: true,
         requestedSessionTimeout: 60000,
         connectionStrategy: {
-            maxRetry: 10000, //20000000,
+            maxRetry: 1000, //20000000,
             initialDelay: 1000,
-            maxDelay: 10000
+            maxDelay: 5000
         },
         securityMode: opcua.MessageSecurityMode.NONE,
         securityPolicy: opcua.SecurityPolicy.None,
