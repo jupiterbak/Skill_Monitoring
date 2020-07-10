@@ -17,6 +17,11 @@ RUN npm install --save node-opcua
 # Bundle app source
 COPY . /app/
 
+# TODO: replace this environment variable before compiling
+ENV DNS_ADDRESS="8.8.8.8"
+
+RUN eval 'echo „nameserver $DNS_ADDRESS“ > /etc/resolv.conf'
+
 EXPOSE 8080
 
 CMD [ "node", "backend/SkillMonitoring.js" ]
