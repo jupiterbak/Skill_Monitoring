@@ -36,7 +36,7 @@
         "on-headers": "^1.0.2",
         "portfinder": "^1.0.28",
         "socket.io": "^2.3.0",
-        "sparql-http-client": "^2.2.2",
+        "sparql-http-client": "^1.2.0",
         "uglify-js": "^3.10.1",
         "util": "^0.12.3",
         "when": "^3.7.8"
