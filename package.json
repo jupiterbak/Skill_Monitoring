@@ -35,7 +35,7 @@
         "oauth2orize": "^1.11.0",
         "on-headers": "^1.0.2",
         "portfinder": "^1.0.28",
-        "socket.io": "^2.3.0",
+        "socket.io": "^2.4.0",
         "sparql-http-client": "^1.2.0",
         "uglify-js": "^3.10.1",
         "util": "^0.12.3",
