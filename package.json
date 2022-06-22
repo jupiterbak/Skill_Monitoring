@@ -12,7 +12,7 @@
         "Jupiter Bakakeu"
     ],
     "dependencies": {
-        "async": "^3.2.0",
+        "async": "^3.2.2",
         "basic-auth": "^2.0.1",
         "chokidar": "^3.4.2",
         "clone": "^2.1.1",
